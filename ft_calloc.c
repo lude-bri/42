@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 11:51:44 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/20 09:31:22 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/04/19 13:18:25 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/04/20 09:29:12 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	size_t			i;
-	unsigned char	*re;
+	unsigned char		*tmp;
 
-	i = 0;
-	re = (unsigned char *)s;
-	while (re[i] || i < n)
-	{
-		if (re[i] == (unsigned char) c)
-			return ((unsigned char *) &re[i]);
-		i++;
-	}
-	return (NULL);
+	tmp = malloc(sizeof(nmemb * size));
+	if (!tmp)
+		return (NULL);
+	ft_bzero(tmp, sizeof(nmemb * size));
+	return (tmp);
 }
-// int	main(void)
-// {
-// 	char	str[] = "retangulo";
-// 	char	c = 'e';
-// 	printf("%s\n", (const char *)ft_memchr(str, c, 4));
-// 	return (0);
-// }

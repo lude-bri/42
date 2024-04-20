@@ -6,7 +6,7 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:14:58 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/17 09:48:43 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/04/20 09:35:06 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,13 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 
 	i = 0;
 	j = 0;
-	//acrescenta meu contador i ate chegar no limite do buffer
 	while (i < size && dst[i])
 		i++;
-	
-	//fazer o cat a partir do ponto onde o contador i + 0 + nulo sendo menor que o buffer
 	while ((i + j + 1) < size && src[j])
 	{
 		dst[i + j] = src[j];
 		j++;
 	}
-	//se o i for diferente do size do buffer, acrescenta o nulo.
 	if (i != size)
 		dst[i + j] = '\0';
 	return (i + strlen(src));

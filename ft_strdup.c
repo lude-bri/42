@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 11:51:44 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/20 09:31:22 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/04/20 08:14:32 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/04/20 09:34:21 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+char	*ft_strdup(const char *s)
 {
-	size_t			i;
-	unsigned char	*re;
+	int		i;
+	char	*sdup;
 
 	i = 0;
-	re = (unsigned char *)s;
-	while (re[i] || i < n)
+	sdup = (char *)malloc(ft_strlen(s) + 1);
+	if (!sdup)
+		return (NULL);
+	while (s[i])
 	{
-		if (re[i] == (unsigned char) c)
-			return ((unsigned char *) &re[i]);
+		sdup[i] = s[i];
 		i++;
 	}
-	return (NULL);
+	sdup[i] = 0;
+	return ((char *)sdup);
 }
-// int	main(void)
-// {
-// 	char	str[] = "retangulo";
-// 	char	c = 'e';
-// 	printf("%s\n", (const char *)ft_memchr(str, c, 4));
-// 	return (0);
-// }

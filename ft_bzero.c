@@ -6,7 +6,7 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:41:33 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/16 11:23:35 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/04/20 08:28:55 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	ft_bzero(void *s, size_t n)
 {
 	size_t			i;
-	unsigned char	*a;
 	size_t			x;
+	unsigned char	*a;
 
 	i = 0;
 	x = '\0';
