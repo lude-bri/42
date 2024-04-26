@@ -1,39 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 10:39:35 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/23 11:26:41 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/04/24 08:40:47 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/04/24 12:10:42 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <string.h>
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+static int	ft_aparar(char const *set, char c);
+
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t			i;
+	int	i;
+	int	j;
 
 	i = 0;
-	if (size <= 0)
-		return (ft_strlen(src));
-	while ((i < size - 1) && (src[i]))
+	j = ft_strlen(s1);
+	if(ft_strlen(s1) == 0)
+		return (ft_strdup(""));
+	while (ft_aparar(set, s1[i]))
+		i++;
+	while (ft_aparar(set, s1[j - 1]))
+		j--;
+	return (ft_substr(s1, i, j - i));
+}
+
+static int	ft_aparar(char const *set, char c)
+{
+	int	i;
+
+	i = 0;
+	while(set[i])
 	{
-		dst[i] = src[i];
+		if(c == set[i])
+			return (1);
 		i++;
 	}
-	dst[i] = '\0';
-	return (ft_strlen(src));
+	return (0);
 }
 
 // int	main(void)
 // {
-// 	char	d[10];
-// 	char	s[10];
-// 	printf("%d\n", strlcpy((void *)0 , (void *)0, 10));
-// 	printf("%zu\n", ft_strlcpy((void *)0 , (void *)0, 10));
+// 	printf("%s\n", ft_strtrim("abcd", ""));
 // 	return (0);
 // }

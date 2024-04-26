@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/19 13:18:25 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/23 09:51:21 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/04/26 11:06:45 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/04/26 12:30:45 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+t_list	*ft_lstnew(void *content)
 {
-	unsigned char		*tmp;
+	t_list	*node;
 
-	tmp = malloc(nmemb * size);
-	if (!tmp)
-		return (NULL);
-	ft_bzero(tmp, (nmemb * size));
-	return (tmp);
+	node = malloc(sizeof(t_list));
+	if(!node)
+		return (0);
+	node->content = content;
+	node->next = 0;
+
+	return(node);
+}
+
+int main(void)
+{
+	char	str[] = "morango";
+	printf("%s\n", (char *)ft_lstnew((char *)str));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:23:00 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/20 08:55:39 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:31:47 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@
 # include <string.h>
 # include <ctype.h>
 
-void	ft_bzero(void *s, size_t n);
+typedef struct s_list
+{
+	void	*content;
+	struct s_list	*next;
+}	t_list;
 
+
+void	ft_bzero(void *s, size_t n);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
@@ -43,6 +49,24 @@ char	*ft_strnstr(const char *big, const char *little, size_t len);
 int	ft_atoi(const char *nprt);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *s);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strtrim(char const *s1, char const *set);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+void	ft_striteri(char *s, void (*f)(unsigned int, char *));
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
+char	*ft_itoa(int n);
+char	**ft_split(char const *s, char c);
+
+t_list	*ft_lstnew(void *content);
+void	ft_lstadd_front(t_list **lst, t_list *new);
+int	ft_lstsize(t_list *lst);
+
+
+
 
 
 
