@@ -6,7 +6,7 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:03:05 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/25 15:09:41 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/04/27 13:03:53 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ char	*ft_itoa(int n)
 	int		i;
 	long	nbr;
 	char	*str_convert;
-	
+
 	nbr = n;
 	i = n_len(nbr);
 	str_convert = malloc(sizeof(char) * n_len(nbr) + 1);
-	if(!str_convert)
+	if (!str_convert)
 		return (0);
 	str_convert[i] = '\0';
 	if (nbr == 0)
@@ -33,7 +33,7 @@ char	*ft_itoa(int n)
 		str_convert[0] = '-';
 		nbr = -nbr;
 	}
-	while(nbr != 0)
+	while (nbr != 0)
 	{
 		str_convert[--i] = ((nbr % 10) + 48);
 		nbr = nbr / 10;
@@ -46,7 +46,7 @@ static int	n_len(int n)
 	int	i;
 
 	i = 0;
-	if(n <= 0)
+	if (n <= 0)
 		i++;
 	while (n != 0)
 	{

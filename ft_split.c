@@ -6,7 +6,7 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 15:11:29 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/04/26 09:55:17 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/04/27 12:59:45 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static char	**free_array(const char **s, int a);
 
 char	**ft_split(char const *str, char c)
 {
-	int	i;
-	int	w;
-	int	l;
+	int		i;
+	int		w;
+	int		l;
 	char	**array;
 
 	i = 0;
@@ -71,15 +71,16 @@ static int	n_letras(const char *s, char c)
 
 	i = 0;
 	qt_letras = 0;
-	while(s[i] == c)
+	while (s[i] == c)
 		i++;
-	while(s[i] != c && s[i])
-	{	
+	while (s[i] != c && s[i])
+	{
 		qt_letras++;
 		i++;
 	}
 	return (qt_letras);
 }
+
 static char	*copiar_palavras(const char *s, int a)
 {
 	int		i;
