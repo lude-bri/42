@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprint.h                                       :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 09:44:41 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/02 19:28:01 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/05/02 15:02:20 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/05/02 19:27:49 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libftprint.h"
 
-# include <unistd.h>
-# include <stdarg.h>
-# include "libft.h"
+int	ft_puthex(char str, unsigned int n)
+{
+	char	*base;
+	int		count;
 
-int	ft_printf(const char *s, ...);
-int	ft_putchar(char c);
-int	ft_putstr(char *s);
-int	ft_putnbr(int n);
-int	ft_puthex(char str, unsigned int n);
-int	ft_putudec(unsigned int n);
-int	ft_putptr(long int n);
-
-#endif
+	base = 0;
+	count = 0;
+	if (str == 'x')
+		base = "0123456789abcdef";
+	else if (str == 'X')
+		base = "0123456789ABCDEF";
+	if (n >= 16)
+	{
+		ft_puthex(str, n / 16);
+		ft_puthex(str, n % 16);
+	}
+	if (n < 16)
+	{
+		ft_putchar(base[n]);
+		count++;
+	}
+	return (count);
+}

@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprint.h                                       :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 09:44:41 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/02 19:28:01 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/05/02 14:46:16 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/05/02 18:50:24 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libftprint.h"
 
-# include <unistd.h>
-# include <stdarg.h>
-# include "libft.h"
+int	ft_putnbr(int n)
+{
+	char	c;
+	int		count;
 
-int	ft_printf(const char *s, ...);
-int	ft_putchar(char c);
-int	ft_putstr(char *s);
-int	ft_putnbr(int n);
-int	ft_puthex(char str, unsigned int n);
-int	ft_putudec(unsigned int n);
-int	ft_putptr(long int n);
-
-#endif
+	count = 0;
+	if (n == -2147483648)
+		write(1, "-2147483648", 11);
+	else if (n < 0)
+	{
+		write(1, "-", 1);
+		n = -n;
+		ft_putnbr(n);
+	}
+	else if (n > 9)
+	{
+		ft_putnbr(n / 10);
+		ft_putnbr(n % 10);
+	}
+	else
+	{
+		c = n + 48;
+		write(1, &c, 1);
+		count++;
+	}
+	return (count);
+}

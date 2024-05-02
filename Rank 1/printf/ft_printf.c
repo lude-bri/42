@@ -6,62 +6,95 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:11:29 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/01 19:12:59 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:30:22 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprint.h"
 
-int	f_specifiers(char *str, va_list a);
+static int	f_specifiers(char str, va_list a);
 
 int	ft_printf(const char *s, ...)
 {
-	int				return_value;
+	int				result;
 	int				i;
 	va_list			args;
 	unsigned char	*str;
 
 	i = 0;
+	result = 0;
 	str = (unsigned char *)s;
 	va_start(args, s);
 	while (str[i])
 	{
 		if (str[i] == '%' && str[i])
-			f_specifiers(str[i + 1], args);
-		while (str[i] && str[i] != '%')
-			write (1, &str[i], 1);
+		{
+			result += f_specifiers(str[i + 1], args);
+			i++;
+		}
+		else if (str[i] != '%' && str[i])
+			result += write(1, &str[i], 1);
 		i++;
 	}
 	va_end(args);
-	return (return_value);
+	return (result);
 }
 
-int	f_specifiers(char *str, va_list a)
+static int	f_specifiers(char str, va_list a)
 {
-	if(*str == 'c')
-		ft_putchar_fd(va_arg(a, int));//printa um single char;
-	else if(*str == 's')
-		//printa uma string;
-	else if(*str == 'p')
-		//o void * pointer argument printa em hexadecimal
-	else if(*str == 'd')
-		//printa um numero decimal (base 10)
-	else if(*str == 'i')
-		//printa um integer na base 10
-	else if(*str == 'u')
-		//printa um numero unsigned decimal base 10
-	else if(*str == 'x')
-		//printa um numero em hexadecimal lowercase
-	else if(*str == 'X')
-		//printa um numero em hexadecimal uppercase
-	else if(*str == '%')
-		write (1, '%', 1); //printa um sinal de porcentagem
-	return (0);
+	int	count;
+
+	count = 0;
+	if(str == 'c')
+		count = ft_putchar(va_arg(a, int));//printa um single char;
+	else if(str == 's')
+		count = ft_putstr(va_arg(a, char *)); //printa uma string;
+	else if(str == 'p')
+		count = ft_putptr(va_arg(a, long int));//o void * pointer argument printa em hexadecimal
+	else if(str == 'd' || str == 'i')
+		count = ft_putnbr(va_arg(a, int));//printa um numero decimal (base 10)
+	else if(str == 'u')
+		count = ft_putudec(va_arg(a, int));//printa um numero unsigned decimal base 10
+	else if(str == 'x' || str == 'X')
+		count = ft_puthex(str, va_arg(a, unsigned int));
+	else if(str == '%')
+		count = ft_putchar('%'); //printa um sinal de porcentagem
+	return (count);
 }
 
-int main(void)
+int	main(void)
 {
-	//ft_printf("%c", "c");
-	printf("%c", "c");
+	char c = 'k'; // %c
+	char *str = "String test"; // %s
+	char *var; var = &c;// %p
+	int	nbr = -5;// %d // %i
+	unsigned int nbrr = 20;// %u
+	int b= 0xffffffff;// %x // %X
+	// %%
+	int i;
+	printf("\n");
+	printf("MEU PRINTF:\n");
+	i = ft_printf("| TEST TEXT |\n| Single Char: %c |\n| String: %s |\n| Pointer Adress: %p |\n| Decimal: %d |\n| Integer %i |\n| Unsign deci: %u |\n| HexLower: %x |\n| HexUpper: %X |\n| Percentage sign: %% |\n", c, str, var, nbr, nbr, nbrr, b, b);
+	printf("\nReturn Value: %d", i);
+	///////////////////////////////
+	printf("\n");
+	printf("\nPRINTF ORIGINAL:\n");
+	i = printf("| TEST TEXT |\n| Single Char: %c |\n| String: %s |\n| Pointer Adress: %p |\n| Decimal: %d |\n| Integer %i |\n| Unsign deci: %u |\n| HexLower: %x |\n| HexUpper: %X |\n| Percentage sign: %% |\n", c, str, var, nbr, nbr, nbrr, b, b);
+	printf("\nReturn Value: %d\n", i);
+	
+	// int b= 0xffffffff;// %x // %X
+	// // %%
+	// int i;
+	// printf("\n");
+	// printf("MEU PRINTF:\n");
+	i = ft_printf("HexLower: %x |\n| HexUpper: %X |\n|", b, b);
+	printf("\nReturn Value: %d", i);
 	return (0);
+	// int	bts;
+
+	// bts = 0xffffffff;
+	// ft_printf("%x", bts);
+	// printf("\n");
+	// printf("%x", bts);
+	// return (0);
 }

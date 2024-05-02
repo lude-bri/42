@@ -6,7 +6,7 @@
 #    By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/30 09:39:06 by lude-bri          #+#    #+#              #
-#    Updated: 2024/04/30 09:43:56 by lude-bri         ###   ########.fr        #
+#    Updated: 2024/05/02 16:38:03 by lude-bri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf 
 NAME = libftprint.a
 
-SRCS_FILES = 
+SRCS_FILES = ft_printf.c ft_putchar.c ft_puthex.c ft_putnbr.c ft_putptr.c \
+	ft_putstr.c ft_putudec.c 
 				
 OBJS = $(SRCS_FILES:.c=.o)
 
