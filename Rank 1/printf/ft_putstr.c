@@ -6,11 +6,11 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:45:27 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/02 18:51:46 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:47:10 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprint.h"
+#include "ft_printf.h"
 
 int	ft_putstr(char *s)
 {
@@ -19,11 +19,12 @@ int	ft_putstr(char *s)
 
 	i = 0;
 	count = 0;
+	if (s == NULL)
+		return (write(1, "(null)", 6));
 	while (s[i])
 	{
-		write(1, &s[i], 1);
+		count += ft_putchar(s[i]);
 		i++;
-		count++;
 	}
 	return (count);
 }

@@ -6,36 +6,31 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:46:16 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/02 18:50:24 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:04:29 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprint.h"
+#include "ft_printf.h"
 
 int	ft_putnbr(int n)
 {
-	char	c;
+	long	c;
 	int		count;
 
+	c = n;
 	count = 0;
-	if (n == -2147483648)
-		write(1, "-2147483648", 11);
-	else if (n < 0)
+	if (c < 0)
 	{
 		write(1, "-", 1);
-		n = -n;
-		ft_putnbr(n);
+		count += 1;
+		c = c * -1;
 	}
-	else if (n > 9)
+	if (c > 9)
 	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
+		count += ft_putnbr(c / 10);
+		c = c % 10;
 	}
-	else
-	{
-		c = n + 48;
-		write(1, &c, 1);
-		count++;
-	}
+	if (c <= 9)
+		count += ft_putchar(c + 48);
 	return (count);
 }

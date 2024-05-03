@@ -6,11 +6,11 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:02:20 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/02 19:27:49 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:36:33 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprint.h"
+#include "ft_printf.h"
 
 int	ft_puthex(char str, unsigned int n)
 {
@@ -25,13 +25,12 @@ int	ft_puthex(char str, unsigned int n)
 		base = "0123456789ABCDEF";
 	if (n >= 16)
 	{
-		ft_puthex(str, n / 16);
-		ft_puthex(str, n % 16);
+		count += ft_puthex(str, n / 16);
+		count += ft_puthex(str, n % 16);
 	}
 	if (n < 16)
 	{
-		ft_putchar(base[n]);
-		count++;
+		count += ft_putchar(base[n]);
 	}
 	return (count);
 }

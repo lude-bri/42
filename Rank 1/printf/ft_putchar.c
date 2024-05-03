@@ -6,14 +6,20 @@
 /*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:43:53 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/02 17:31:27 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:30:17 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprint.h"
+#include "ft_printf.h"
 
 int	ft_putchar(char c)
 {
 	write(1, &c, 1);
 	return (1);
 }
+// int main(void)
+// {
+// 	printf("%p\n", ptr);
+// 	ft_printf("%p\n", -1);
+// 	return 0;
+// }
