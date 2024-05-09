@@ -6,7 +6,7 @@
 /*   By: lude-bri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 09:00:03 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/08 17:00:29 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/09 10:05:20 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 char	*get_next_line(int fd)
 {
 	char			*raw_line;
-	char			*clean_line;
+	char			*clear_line;
 	static char		*new_line;
 	char			*ptr_to_last;
 
-	raw_line = fill_line(fd);/*funcao que faz o storage ate identificar \n*/
+	raw_line = fill_line(fd); /*funcao que faz o storage ate identificar \n*/
 	if(!raw_line)
 		return (NULL);
 	/*loop para podar raw_line e preencher a new_line*/
@@ -59,7 +59,7 @@ char	*fill_line(int fd)
 		return (0);
 	line_to_read = ft_calloc(1,1);
 	bytes_read = 1;
-	while (bytes_read > 0)
+	while (bytes_read != 0 && !ft_strchr(buffer, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -68,9 +68,7 @@ char	*fill_line(int fd)
 			return (0);
 		}
 		buffer[bytes_read] = '\0';
-		if (!ft_strchr(buffer, '\n'))
-			break ;
-		line_to_read = ft_strjoin(line_to_read, buffer);
+		line_to_read = ft_strjoin(line_to_read, buffer); //verificar leaks
 		if (!line_to_read)
 			return (0);
 	}
