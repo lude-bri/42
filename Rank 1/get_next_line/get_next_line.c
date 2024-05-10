@@ -6,7 +6,7 @@
 /*   By: lude-bri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 09:00:03 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/09 10:05:20 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:16:06 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@
 char	*get_next_line(int fd)
 {
 	char			*raw_line;
-	char			*clear_line;
-	static char		*new_line;
-	char			*ptr_to_last;
+	char			*new_line;
+	static char		*ptr_to_last;
 
+	if (!fd || !BUFFER_SIZE)
+		return (0);
 	raw_line = fill_line(fd); /*funcao que faz o storage ate identificar \n*/
 	if(!raw_line)
 		return (NULL);
@@ -34,9 +35,7 @@ char	*get_next_line(int fd)
 	while (raw_line)
 	{
 		/*podar a variavel*/
-		clean_line = line_to_clean(raw_line);
-		/* loop para preencher a new line*/
-		new_line = fill_line(fd, raw_line);
+		new_line = line_to_clean(raw_line);
 		if (!new_line)
 		{
 			/*clean-free*/
@@ -68,7 +67,7 @@ char	*fill_line(int fd)
 			return (0);
 		}
 		buffer[bytes_read] = '\0';
-		line_to_read = ft_strjoin(line_to_read, buffer); //verificar leaks
+		line_to_read = ft_strjoin(line_to_read, buffer); //verificar leaks - preciso free
 		if (!line_to_read)
 			return (0);
 	}
@@ -77,13 +76,31 @@ char	*fill_line(int fd)
 }
 
 /*funcao para limpar a raw_line*/
-char	*line_to_clean(char *c);
+char	*line_to_clean(char *str);
 {
 	//podar a raw_line;
 
+	char	*str_clean;
+	char	*s;
+	int		len;
+
+	i = 0;
+	if (!str)
+		return (0);
+	s = ft_strchr(str, '\n'); //buscar onde ele acha o \n
+	len = ft_strlen(s); //ver o tamanho da string ate o \n
+	str_clean = ft_substr(str, 0, len); //fazer uma string clean
+	if (!str_clean)
+		return (0);
+	while (str[i])
+	{
+		if (str_to_clean[i] != '\n')
+		i++;
+	}
+	if (str[i] == '\n')
+		return ()
 
 }
-
 
 int	main(void)
 {
