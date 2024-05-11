@@ -6,7 +6,7 @@
 /*   By: lude-bri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 09:00:03 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/10 18:16:06 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/11 18:09:36 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,36 @@
 //4. guardar o pointer para a ultima posicao do \n;
 //5. retornar a nova linha;
 
+char	*fill_line(int fd, char *str);
+char	*line_to_clean(char *str, char *rubbish);
+static char	*ft_rub(char *str_line, char *str_rub);
+
+
 char	*get_next_line(int fd)
 {
-	char			*raw_line;
-	char			*new_line;
-	static char		*ptr_to_last;
+	char				*raw_line;
+	char				*new_line;
+	static char			*ptr_to_last;
 
 	if (!fd || !BUFFER_SIZE)
 		return (0);
-	raw_line = fill_line(fd); /*funcao que faz o storage ate identificar \n*/
+	raw_line = fill_line(fd, ptr_to_last);
 	if(!raw_line)
 		return (NULL);
-	/*loop para podar raw_line e preencher a new_line*/
-	while (raw_line)
-	{
-		/*podar a variavel*/
-		new_line = line_to_clean(raw_line);
-		if (!new_line)
-		{
-			/*clean-free*/
-		}
-	}
-	/*retornar o pointer ate a \n + 1 (inicio da proxima linha)*/
-	ptr_to_last = ft_strrchr(raw_line, '\n');
+	new_line = line_to_clean(raw_line, ptr_to_last);
+	if (!new_line)
+		return (0);
+	free(raw_line);
+	free(ptr_to_last);
 	return (new_line);
 }
 
 /*funcao para preencher a linha raw*/
-char	*fill_line(int fd)
+char	*fill_line(int fd, char *str)
 {
 	char		*line_to_read;
 	char		*buffer;
+	char		*rubbish;
 	size_t		bytes_read;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -72,34 +71,62 @@ char	*fill_line(int fd)
 			return (0);
 	}
 	free(buffer);
+	if (!str)
+		return (ft_strdup(""));
+	rubbish = str;
+	line_to_read = ft_strjoin(rubbish, line_to_read);
 	return (line_to_read);
 }
 
 /*funcao para limpar a raw_line*/
-char	*line_to_clean(char *str);
+char	*line_to_clean(char *str, char *rubbish)
 {
-	//podar a raw_line;
-
-	char	*str_clean;
-	char	*s;
-	int		len;
+	char	*line;
+	int		i;
 
 	i = 0;
-	if (!str)
-		return (0);
-	s = ft_strchr(str, '\n'); //buscar onde ele acha o \n
-	len = ft_strlen(s); //ver o tamanho da string ate o \n
-	str_clean = ft_substr(str, 0, len); //fazer uma string clean
-	if (!str_clean)
-		return (0);
-	while (str[i])
-	{
-		if (str_to_clean[i] != '\n')
+	while (str[i] != '\0' && str[i] != '\n')
 		i++;
-	}
 	if (str[i] == '\n')
-		return ()
+		line = malloc(sizeof(char) * (i + 2));
+	else if (str[i] == '\0')
+		line = malloc(sizeof(char) * (i + 1));
+	if (!line)
+		return (0);
+	line = ft_substr(str, 0, (i + 1));
+	if (!line)
+		return (NULL);
+	rubbish = ft_rub(str, rubbish);
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (line[i] == '\n')
+		line[i] = '\0';
+	return (line);
+}
 
+/*funcao para recolher o lixo*/
+static char	*ft_rub(char *str_line, char *str_rub)
+{
+	int	i;
+
+	i = ft_strlen(str_line);
+	str_rub = malloc(sizeof(char) * (i + 1));
+	if (!str_rub)
+	{
+		free(str_rub);
+		return (0);
+	}
+	i = 0;
+	while (str_line[i] && str_line[i] != '\n')
+		i++;
+	if (str_line[i] == '\n')
+		str_rub = ft_substr(str_line, i + 1, ft_strlen(str_line) - i);
+	else
+		str_rub = ft_substr(str_line, i, ft_strlen(str_line) - i);
+	i = ft_strlen(str_rub);
+	str_rub[i] = '\0';
+	return (str_rub);
 }
 
 int	main(void)
@@ -111,7 +138,17 @@ int	main(void)
 	path = "shrek.txt";
 	fd = open(path, O_RDONLY);
 	a = get_next_line(fd);
-	printf("%s\n", a);
+	printf("First line : %s\n", a);
+	a = get_next_line(fd);
+	printf("Second line : %s\n", a);
+	a = get_next_line(fd);
+	printf("Third line : %s\n", a);
+	a = get_next_line(fd);
+	printf("Fourth line : %s\n", a);
+	a = get_next_line(fd);
+	printf("Fifth line : %s\n", a);
+	a = get_next_line(fd);
+	printf("Sixth line : %s\n", a);
 	return (0);
 }
 
