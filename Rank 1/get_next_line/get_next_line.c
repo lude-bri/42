@@ -6,7 +6,7 @@
 /*   By: lude-bri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 09:00:03 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/11 18:09:36 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/13 09:22:10 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 char	*fill_line(int fd, char *str);
 char	*line_to_clean(char *str, char *rubbish);
-static char	*ft_rub(char *str_line, char *str_rub);
+char	*ft_rub(char *str_line, char *str_rub);
 
 
 char	*get_next_line(int fd)
@@ -31,16 +31,18 @@ char	*get_next_line(int fd)
 	char				*new_line;
 	static char			*ptr_to_last;
 
-	if (!fd || !BUFFER_SIZE)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
+	if (!ptr_to_last)
+		ptr_to_last = ft_calloc(1,1);
 	raw_line = fill_line(fd, ptr_to_last);
 	if(!raw_line)
 		return (NULL);
 	new_line = line_to_clean(raw_line, ptr_to_last);
 	if (!new_line)
 		return (0);
+	ptr_to_last = ft_rub(raw_line, ptr_to_last);
 	free(raw_line);
-	free(ptr_to_last);
 	return (new_line);
 }
 
@@ -96,17 +98,16 @@ char	*line_to_clean(char *str, char *rubbish)
 	line = ft_substr(str, 0, (i + 1));
 	if (!line)
 		return (NULL);
-	rubbish = ft_rub(str, rubbish);
 	i = 0;
 	while (line[i] && line[i] != '\n')
 		i++;
 	if (line[i] == '\n')
-		line[i] = '\0';
+		line[i + 1] = '\0';
 	return (line);
 }
 
 /*funcao para recolher o lixo*/
-static char	*ft_rub(char *str_line, char *str_rub)
+char	*ft_rub(char *str_line, char *str_rub)
 {
 	int	i;
 
@@ -124,8 +125,6 @@ static char	*ft_rub(char *str_line, char *str_rub)
 		str_rub = ft_substr(str_line, i + 1, ft_strlen(str_line) - i);
 	else
 		str_rub = ft_substr(str_line, i, ft_strlen(str_line) - i);
-	i = ft_strlen(str_rub);
-	str_rub[i] = '\0';
 	return (str_rub);
 }
 
@@ -138,17 +137,17 @@ int	main(void)
 	path = "shrek.txt";
 	fd = open(path, O_RDONLY);
 	a = get_next_line(fd);
-	printf("First line : %s\n", a);
+	printf("First line : %s", a);
 	a = get_next_line(fd);
-	printf("Second line : %s\n", a);
+	printf("Second line : %s", a);
 	a = get_next_line(fd);
-	printf("Third line : %s\n", a);
+	printf("Third line : %s", a);
 	a = get_next_line(fd);
-	printf("Fourth line : %s\n", a);
+	printf("Fourth line : %s", a);
 	a = get_next_line(fd);
-	printf("Fifth line : %s\n", a);
+	printf("Fifth line : %s", a);
 	a = get_next_line(fd);
-	printf("Sixth line : %s\n", a);
+	printf("Sixth line : %s", a);
 	return (0);
 }
 
