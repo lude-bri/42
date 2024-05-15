@@ -3,51 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lude-bri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 09:10:04 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/11 07:21:44 by lude-bri         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:35:20 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*ft_strjoin(char const *s1, char const *s2);
+char		*ft_strjoin(const char *s1, const char *s2);
 char		*ft_strchr(const char *s, int c);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *s, size_t n);
-size_t		ft_strlen(const char *s);
-char		*ft_substr(char const *s, unsigned int start, size_t len);
-char		*ft_strdup(const char *s);
+char		*ft_substr(char *s, unsigned int start, size_t len);
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	size_t	i;
-	size_t	j;
-	char	*new_str;
+	char	*str;
+	char	*sptr;
+	int		i;
 
+	if (!s1 || !s2)
+		return (NULL);
+	sptr = (char *)s1;
+	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
 	i = 0;
-	j = 0;
-	new_str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!new_str)
-		return (0);
-	while (s1[i])
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		new_str[i++] = s2[j];
-		j++;
-	}
-	new_str[i] = 0;
-	return (new_str);
+	if (s1)
+		while (*s1)
+			str[i++] = *s1++;
+	while (*s2)
+		str[i++] = *s2++;
+	str[i] = '\0';
+	if (sptr)
+		free(sptr);
+	return (str);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	unsigned char		*tmp;
+	char		*tmp;
 
 	tmp = malloc(nmemb * size);
 	if (!tmp)
@@ -76,16 +73,6 @@ char	*ft_strchr(const char *s, int c)
 		return (NULL);
 }
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 void	ft_bzero(void *s, size_t n)
 {
 	size_t			i;
@@ -102,18 +89,20 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	size_t			i;
-	unsigned char	*str;
+	char			*str;
 
 	i = 0;
-	str = (unsigned char *)s;
+	if (!*s)
+		return (0);
+	str = (char *)s;
 	if (start > ft_strlen(s))
-		return (ft_strdup(""));
+		return (0);
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
-	str = malloc(len * sizeof(char) + 1);
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	while (i < len)
@@ -121,25 +110,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		str[i] = s[start + i];
 		i++;
 	}
+	//free (s);
 	str[i] = 0;
 	return ((char *)str);
 }
-
-char	*ft_strdup(const char *s)
-{
-	int		i;
-	char	*sdup;
-
-	i = 0;
-	sdup = (char *)malloc(ft_strlen(s) + 1);
-	if (!sdup)
-		return (NULL);
-	while (s[i])
-	{
-		sdup[i] = s[i];
-		i++;
-	}
-	sdup[i] = 0;
-	return ((char *)sdup);
-}
-
