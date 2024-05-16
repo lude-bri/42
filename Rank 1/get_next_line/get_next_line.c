@@ -3,133 +3,145 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lude-bri <lude-bri@42student.fr>           +#+  +:+       +#+        */
+/*   By: lude-bri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/04 09:00:03 by lude-bri          #+#    #+#             */
-/*   Updated: 2024/05/15 10:53:36 by lude-bri         ###   ########.fr       */
+/*   Created: 2024/05/16 13:45:28 by lude-bri          #+#    #+#             */
+/*   Updated: 2024/05/16 19:51:29 by lude-bri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*fill_line(int fd, char *str);
-char	*line_to_clean(char *str);
-char	*ft_rub(char *str_line, char *str_rub);
-size_t	ft_strlen(const char *s);
+//GET NEXT LINE
+//
+// Programa que le linha por linha de um arquivo
+// Faz a leitura determinada sempre pelo seu BUFFER_SIZE
+// Ao chegar no final do arquivo de texto, temos um nulo
+//
+// Hence, to start this project, we need to set our rules
+//
+// 1. Needs to read the txt according to the BUFFER_SIZE 
+// 2. Once read, we need to trim the line read till the end (\n or \0)
+// 3. Then, we take the rest and store this to be read among the next line
+// 4. Finally, we read again, starting from the rest content stored.
+// 5. If there is no content, we reach to the end of our program.
 
+/*************************************************************************/
+/*
+ * FOR THIS, LETS USE 4 MAIN FUNCTIONS:
+ * 				1./ Get_next_line = will organize the read, trim and storage
+ * 				2./ Fill_line = will read the whole chunk 
+ * 				3./ Line_to_clean = will trim the line read
+ * 				4./ Get_rest = will storage the rest of the line
+***************************************************************************/
+
+/*1.get_next_line */
 char	*get_next_line(int fd)
 {
-	char				*raw_line;
-	char				*new_line;
-	static char			*ptr_to_last;
+	char			*line;
+	static char		*raw_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!raw_line)
 	{
-		return (0);
+		raw_line = malloc(1);
+		raw_line[0] = '\0';
 	}
-	if (!ptr_to_last)
-		ptr_to_last = ft_calloc(1, 1);
-	raw_line = fill_line(fd, ptr_to_last);
+	raw_line = fill_line(fd, raw_line);
 	if (!raw_line)
 		return (NULL);
-	new_line = line_to_clean(raw_line);
-	if (!new_line)
-		return (NULL);
-	ptr_to_last = ft_rub(raw_line, ptr_to_last);
-	//if (!ptr_to_last)
-	//	return (NULL);
-	free(raw_line);
-	return (new_line);
+	line = line_to_clean(raw_line);
+	raw_line = get_rest(raw_line);
+	return (line);
 }
 
-char	*fill_line(int fd, char *str_sta)
+/*2. fill_line */
+char	*fill_line(int fd, char *raw)
 {
-	char		*buffer;
-	int			bytes_read;
+	char	*buffer;
+	int		bytes_read;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (0);
+		return (NULL);
 	bytes_read = 1;
-	*buffer = '\0';
-	while (bytes_read != 0 && !ft_strchr(buffer, '\n'))
+	while (bytes_read != 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
+		if (bytes_read <= 0)
 		{
-			//if (str_sta)
-			//free(str_sta);
 			free(buffer);
-			str_sta = NULL;
+			if (raw)
+				return (raw);
+			free(raw);
 			return (NULL);
 		}
 		buffer[bytes_read] = '\0';
-		str_sta = ft_strjoin(str_sta, buffer);
+		raw = ft_strjoin(raw, buffer);
+		if (ft_strchr(raw, '\n'))
+			break ;
 	}
 	free(buffer);
-	return (str_sta);
+	return (raw);
 }
 
-char *line_to_clean(char *str)
+/*3. line_to_clean */
+char	*line_to_clean(char *raw)
 {
-	char	*line;
 	int		i;
+	char	*line;
 
 	i = 0;
-	if (!str[i])
+	if (!*raw)
 		return (NULL);
-	while (str[i] != '\0' && str[i] != '\n')
+	while (raw[i] != '\0' && raw[i] != '\n')
 		i++;
-	line = malloc(sizeof(char) * (i + 2)); //verificar leaks
+	line = malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] != '\n')
+	while (raw[i] != '\0' && raw[i] != '\n')
 	{
-		line[i] = str[i];
+		line[i] = raw[i];
 		i++;
 	}
-	if (str[i] == '\n')
+	if (raw[i] == '\n')
 	{
-		line[i] = str[i];
+		line[i] = raw[i];
 		i++;
 	}
 	line[i] = '\0';
 	return (line);
 }
 
-char	*ft_rub(char *str_line, char *str_rub)
+/*4. get_rest */
+char	*get_rest(char *raw)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	*rest;
 
-	i = ft_strlen(str_line);
-//	str_rub = malloc(sizeof(char) * (i + 1)); //verificar leaks
-	if (!str_rub)
+	i = 0;
+	while (raw[i] != '\0' && raw[i] != '\n')
+		i++;
+	if (!raw[i])
 	{
-		free(str_line);
-		return (0);
+		free(raw);
+		return (NULL);
 	}
-	i = 0;
-	while (str_line[i] && str_line[i] != '\n')
-		i++;
-	//if (str_line[i] == '\n')
-	str_rub = ft_substr(str_line, i + 1, ft_strlen(str_line) - i);
-	//else
-	//	str_rub = ft_substr(str_line, i, ft_strlen(str_line) - i);
-	return (str_rub);
+	rest = malloc(sizeof(char) * (ft_strlen(raw) - i + 1));
+	if (!rest)
+		return (NULL);
+	i++;
+	j = 0;
+	while (raw[i])
+		rest[j++] = raw[i++];
+	free(raw);
+	rest[j] = '\0';
+	return (rest);
 }
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
 /*
 int	main(void)
 {
@@ -140,10 +152,13 @@ int	main(void)
 	path = "alpha.txt";
 	fd = open(path, O_RDONLY);
 	a = get_next_line(fd);
-	printf("First line : %s", a);
-	a = get_next_line(fd);
-	printf("Second line : %s", a);
-	a = get_next_line(fd);
+	while (a)
+	{
+		printf("First line : %s", a);
+		free(a);
+		a = get_next_line(fd);
+	}
+	close(fd);
 	return (0);
 }
 */
